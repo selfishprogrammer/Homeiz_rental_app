@@ -93,12 +93,12 @@ export default {
     fontFamily: 'math',
   },
   toastView: {
-    backgroundColor: 'rgba(253, 252, 252, 1)',
-    margin: 20,
-    marginTop: 190,
+    backgroundColor: '#fff',
     padding: 5,
-    borderRadius: 5,
-    paddingBottom: 10,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
+    borderWidth: 1,
+    borderColor: 'grey',
   },
   toastTxt: {
     textAlign: 'center',

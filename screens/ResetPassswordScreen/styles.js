@@ -129,7 +129,7 @@ export default {
   loginBtn: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#00bfff',
+    backgroundColor: '#A5DE18',
     margin: 10,
     borderRadius: 5,
   },
@@ -147,16 +147,14 @@ export default {
   toastView: {
     backgroundColor: 'rgba(253, 252, 252, 1)',
     margin: 20,
-    marginTop: 190,
     padding: 5,
     borderRadius: 5,
-    paddingBottom: 10,
   },
   toastTxt: {
     textAlign: 'center',
     color: 'white',
     padding: 10,
-    fontSize: 15,
+    fontSize: 12,
     fontFamily: 'serif',
     fontWeight: 'bold',
   },

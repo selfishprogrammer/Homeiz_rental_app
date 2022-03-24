@@ -149,7 +149,7 @@ export default {
   toastView: {
     backgroundColor: 'rgba(253, 252, 252, 1)',
     margin: 20,
-    marginTop: 190,
+    marginTop: 80,
     padding: 5,
     borderRadius: 5,
     paddingBottom: 10,

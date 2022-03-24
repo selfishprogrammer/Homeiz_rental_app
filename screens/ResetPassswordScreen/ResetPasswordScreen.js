@@ -11,13 +11,20 @@ import {TextInput} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import styles from './styles';
+import Services from '../../services/Services';
+import Loader from '../../constants/Loader';
+import Successmodal from '../../components/SuccessModal';
 export default function ResetPasswordScreen(props) {
   const [newPassword, setnewPassword] = useState('');
   const [newPasswordError, setnewPasswordError] = useState('');
   const [cnewPassword, setcnewPassword] = useState('');
   const [cnewPasswordError, setcnewPasswordError] = useState('');
+  const [email, setemail] = useState(props.route.params.email);
   const [isLoading, setisLoading] = useState(false);
   const [backendResponce, setbackendResponce] = useState('');
+  const [successResp, setsuccessResp] = useState('');
+  const [successModal, setsuccessModal] = useState(false);
+
   const navigation = useNavigation();
   const resetErrorfield = () => {
     setnewPasswordError('');
@@ -29,8 +36,12 @@ export default function ResetPasswordScreen(props) {
     setnewPassword('');
     setcnewPassword('');
   };
-
-  const ResetPaasword = email_reg => {
+  const renderSuccessModal = () => {
+    if (successModal) {
+      return <Successmodal title={successResp} />;
+    }
+  };
+  const ResetPaasword = async () => {
     resetErrorfield();
     var pass_val = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{8,}/g;
 
@@ -45,45 +56,51 @@ export default function ResetPasswordScreen(props) {
       } else if (newPassword != cnewPassword) {
         setcnewPasswordError('Password Does Not Matches !');
       } else {
-        // setisLoading(true);
-        // setTimeout(async () => {
-        //   const data = await JSON.stringify(AsyncStorage.getItem('userData'));
-        //   console.log('==>', data);
-        //   await axios
-        //     .post(
-        //       'http://192.168.64.2/codegeeks/resetPassword.php',
-        //       JSON.stringify({
-        //         email: email_reg,
-        //         password: newPassword,
-        //       }),
-        //     )
-        //     .then(res => {
-        //       res.data.status == 'true'
-        //         ? navigation.replace('SuccessScreen', {
-        //             from: 'resetPass',
-        //           })
-        //         : setbackendResponce(res.data.data);
-        //     })
-        //     .catch(e => console.log(e));
-        //   setisLoading(false);
-        // }, 3000);
+        setisLoading(true);
+        const userInfo = {
+          email,
+          password: newPassword,
+        };
+        console.log('userInfo====>', userInfo);
+        const responce = await Services.resetPassword(userInfo);
+        console.log('responce====>', responce);
+        if (responce.status === 'true') {
+          setsuccessResp(responce.data);
+          setsuccessModal(true);
+          setTimeout(() => {
+            if (props.route.params.from === 'forgotPass') {
+              navigation.navigate('LoginScreen');
+            } else {
+              navigation.navigate('ProfileViewScreen');
+            }
+          }, 2000);
+        } else {
+          setbackendResponce(responce.data);
+        }
+        setisLoading(false);
       }
     }
 
     resetInputfield('');
   };
   return (
-    <ImageBackground
-      source={{
-        uri: 'https://wallpaperaccess.com/full/1700222.jpg',
-      }}
-      resizeMode="cover"
-      style={styles.searchImage}>
-      <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: 'rgba(0, 57, 72, 1)'}}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+        }}>
         {/* {console.log(props.route.params.email_cont)} */}
+        <Loader spin={isLoading} />
+        {renderSuccessModal()}
         <View style={styles.toastView}>
-          {backendResponce != '' ? (
-            <View style={{backgroundColor: '#F4315B', borderRadius: 10}}>
+          {backendResponce !== '' ? (
+            <View
+              style={{
+                backgroundColor: '#D50000',
+                borderRadius: 10,
+                margin: 15,
+              }}>
               <Text style={styles.toastTxt}>{backendResponce}</Text>
             </View>
           ) : null}
@@ -180,6 +197,6 @@ export default function ResetPasswordScreen(props) {
           </View>
         </View>
       </View>
-    </ImageBackground>
+    </View>
   );
 }

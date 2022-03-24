@@ -1,3 +1,5 @@
+import Colors from '../constants/Colors';
+
 const React = require('react-native');
 
 export default {
@@ -5,7 +7,7 @@ export default {
     flexDirection: 'row',
     padding: 17,
     //paddingTop:45,
-    backgroundColor: '#2471A3',
+    backgroundColor: 'rgba(0, 57, 72, 1)',
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'relative',
@@ -17,5 +19,75 @@ export default {
     marginRight: 'auto',
     color: '#fff',
     fontFamily: 'serif',
+  },
+  confirmModalContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,.8)',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: 20,
+  },
+  confirmModalContent: {
+    backgroundColor: '#fff',
+    width: '85%',
+    borderRadius: 8,
+    padding: 25,
+  },
+  confirmButTxt: {
+    color: Colors.cfmIconColor,
+    fontFamily: 'BlissPro-Bold',
+    fontSize: 18,
+    marginLeft: 15,
+  },
+  confirmfmText: {
+    fontSize: 17,
+    fontFamily: 'serif',
+    color: 'black',
+    fontWeight: 'normal',
+    textAlign: 'center',
+  },
+  warnfmText: {
+    fontSize: 17,
+    fontFamily: 'serif',
+    color: 'black',
+    fontWeight: 'normal',
+    textAlign: 'center',
+  },
+  nearBy: {
+    display: 'flex',
+    textAlign: 'center',
+    fontWeight: 'normal',
+    color: 'black',
+    fontSize: 15,
+    fontFamily: 'serif',
+  },
+  distanceClick: {
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    width: 120,
+    padding: 5,
+    borderColor: 'grey',
+    borderWidth: 0.3,
+    marginLeft: 3,
+    marginRight: 3,
+  },
+  filterCont: {
+    padding: 10,
+    backgroundColor: 'rgb(217, 217, 217)',
+    margin: 10,
+    borderRadius: 15,
+  },
+  filterTxt: {
+    marginLeft: 5,
+    fontFamily: 'serif',
+    fontSize: 15,
+    color: 'black',
+    fontWeight: '700',
   },
 };

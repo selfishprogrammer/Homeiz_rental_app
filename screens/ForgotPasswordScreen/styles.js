@@ -151,7 +151,7 @@ export default {
     justifyContent: 'center',
     borderRadius: 5,
     paddingTop: 25,
-    padding: 20,
+    padding: 10,
   },
   toastView: {
     backgroundColor: 'rgba(253, 252, 252, 1)',
@@ -165,7 +165,7 @@ export default {
     textAlign: 'center',
     color: 'white',
     padding: 10,
-    fontSize: 15,
+    fontSize: 12,
     fontFamily: 'serif',
     fontWeight: 'bold',
   },

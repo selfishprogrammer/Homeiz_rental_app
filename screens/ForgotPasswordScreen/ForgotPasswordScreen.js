@@ -3,10 +3,10 @@ import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, ImageBackground} from 'react-native';
 import {Image} from 'react-native-elements';
 import {TextInput} from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Icon} from '../../constants/Images';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import styles from './styles';
+import Services from '../../services/Services';
+import Loader from '../../constants/Loader';
 
 export default function ForgotPasswordScreen({navigation}) {
   const [email, setemail] = useState('');
@@ -14,60 +14,46 @@ export default function ForgotPasswordScreen({navigation}) {
   const [backendResponce, setbackendResponce] = useState('');
   const [isLoading, setisLoading] = useState(false);
 
-  const editPass = () => {
+  const editPass = async () => {
     var email_val =
       /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     setemailError('');
+    setbackendResponce('');
     if (email.length <= 0) {
       setemailError('Field Can not be empty !');
     } else if (!email_val.test(email)) {
       setemailError('Please Enter Valid Email Format');
     } else {
-      //   setisLoading(true);
-      //   setTimeout(async () => {
-      //     await axios
-      //       .post(
-      //         'http://192.168.64.2/codegeeks/edit_password.php',
-      //         JSON.stringify({
-      //           email: email,
-      //         }),
-      //       )
-      //       .then(async res => {
-      //         await AsyncStorage.setItem('userData', JSON.stringify(res.data));
-      //         console.log(
-      //           'AsyncData===>',
-      //           await AsyncStorage.getItem('userData'),
-      //         );
-      //         res.data.status == 'true'
-      //           ? navigation.navigate('ResetPasswordScreen', {
-      //               email_cont: res.data.email,
-      //             })
-      //           : setbackendResponce(res.data.data);
-      //       })
-      //       .catch(e => console.log(e));
-      //     setisLoading(false);
-      //   }, 3000);
+      setisLoading(true);
+      const data = {
+        email,
+      };
+      const responce = await Services.forgotPassword(data);
+      if (responce.status === 'true') {
+        navigation.navigate('ResetPasswordScreen', {
+          email,
+          from: 'forgotPass',
+        });
+      } else {
+        setbackendResponce(responce.data);
+      }
+      setisLoading(false);
+      setemail('');
     }
-    setemail('');
   };
   return (
-    <ImageBackground
-      source={{
-        uri: 'https://wallpaperaccess.com/full/1700222.jpg',
-      }}
-      resizeMode="cover"
-      style={styles.searchImage}>
+    <View style={{flex: 1, backgroundColor: 'rgba(0, 57, 72, 1)'}}>
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.box}>
-          {backendResponce != '' ? (
-            <View style={{backgroundColor: '#F4315B', borderRadius: 10}}>
-              <Text style={styles.errorToast}>
-                <Image
-                  source={Icon}
-                  style={{width: 20, height: 20, paddingTop: 10}}
-                />{' '}
-                {backendResponce}
-              </Text>
+          <Loader spin={isLoading} />
+          {backendResponce !== '' ? (
+            <View
+              style={{
+                backgroundColor: '#D50000',
+                borderRadius: 10,
+                margin: 15,
+              }}>
+              <Text style={styles.toastTxt}>{backendResponce}</Text>
             </View>
           ) : null}
           <Text
@@ -130,7 +116,7 @@ export default function ForgotPasswordScreen({navigation}) {
             style={{
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: '#00bfff',
+              backgroundColor: '#A5DE18',
               margin: 10,
               borderRadius: 5,
             }}>
@@ -143,6 +129,6 @@ export default function ForgotPasswordScreen({navigation}) {
           </View>
         </View>
       </SafeAreaView>
-    </ImageBackground>
+    </View>
   );
 }

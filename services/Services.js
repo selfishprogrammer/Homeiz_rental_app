@@ -9,4 +9,16 @@ export default class Services {
   static userLogin = async data => {
     return postReq('Authentication/login.php', data);
   };
+  static resetPassword = async data => {
+    return postReq('Authentication/resetPassword.php', data);
+  };
+  static editProfile = async data => {
+    return postReq('Authentication/editProfile.php', data);
+  };
+  static deleteAccount = async data => {
+    return postReq('Authentication/deleteAccount.php', data);
+  };
+  static forgotPassword = async data => {
+    return postReq('Authentication/forgotPass.php', data);
+  };
 }

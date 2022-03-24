@@ -10,6 +10,10 @@ import ForgotPasswordScreen from '../screens/ForgotPasswordScreen/ForgotPassword
 import ResetPasswordScreen from '../screens/ResetPassswordScreen/ResetPasswordScreen';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import ContactUsScreen from '../screens/ContactUsScreen/ContactUsScreen';
+import Profileviewscreen from '../screens/ProfileViewScreen/ProfileViewScreen';
+import Editprofilescreen from '../screens/EditProfileScreen/EditProfileScreen';
+import Housescreen from '../screens/HouseScreen/HouseScreen';
+import DeleteAccountScreen from '../screens/DeleteAccountScreen/DeleteAccountScreen';
 const Stack = createNativeStackNavigator();
 
 const LoginStack = () => {
@@ -24,13 +28,13 @@ const LoginStack = () => {
       }}>
       <Stack.Screen
         options={{headerShown: false}}
-        name="ForgotPasswordScreen"
-        component={ForgotPasswordScreen}
+        name="LoginScreen"
+        component={LoginScreen}
       />
       <Stack.Screen
         options={{headerShown: false}}
-        name="LoginScreen"
-        component={LoginScreen}
+        name="ForgotPasswordScreen"
+        component={ForgotPasswordScreen}
       />
       <Stack.Screen
         options={{headerShown: false}}
@@ -82,7 +86,44 @@ const ContactStack = () => {
     </Stack.Navigator>
   );
 };
-const myTabs = () => {
+
+const ProfileStack = () => {
+  return (
+    <Stack.Navigator
+      headerMode="none"
+      initialRouteName="ProfileViewScreen"
+      screenOptions={{
+        headerShown: false,
+        gestureEnabled: true,
+        cardOverlayEnabled: true,
+      }}>
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="ProfileViewScreen"
+        component={Profileviewscreen}
+      />
+    </Stack.Navigator>
+  );
+};
+const HouseStack = () => {
+  return (
+    <Stack.Navigator
+      headerMode="none"
+      initialRouteName="HouseScreen"
+      screenOptions={{
+        headerShown: false,
+        gestureEnabled: true,
+        cardOverlayEnabled: true,
+      }}>
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="HouseScreen"
+        component={Housescreen}
+      />
+    </Stack.Navigator>
+  );
+};
+const MyTabs = () => {
   const Bottom = createMaterialBottomTabNavigator();
 
   return (
@@ -116,13 +157,11 @@ const myTabs = () => {
       />
 
       <Bottom.Screen
-        name="Home2"
-        component={HomeStack}
+        name="House"
+        component={HouseStack}
         options={{
           headerShown: true,
-          tabBarLabel: (
-            <Text style={{fontFamily: 'serif'}}>House For Rent</Text>
-          ),
+          tabBarLabel: <Text style={{fontFamily: 'serif'}}>Houses</Text>,
           tabBarIcon: ({color}) => (
             <Image
               style={{height: 22, width: 22}}
@@ -148,16 +187,54 @@ const myTabs = () => {
           ),
         }}
       />
+      <Bottom.Screen
+        name="Profile"
+        component={ProfileStack}
+        options={{
+          tabBarLabel: <Text style={{fontFamily: 'serif'}}>Profile</Text>,
+          tabBarIcon: ({color}) => (
+            <Image
+              style={{height: 22, width: 22}}
+              source={{
+                uri: 'https://icon-library.com/images/profile-png-icon/profile-png-icon-2.jpg',
+              }}
+            />
+          ),
+        }}
+      />
     </Bottom.Navigator>
   );
 };
 const Maintabnavigator = () => {
   const isLoggedIn = useSelector(state => state.reducer.isLoggedIn);
   console.log('login status===>', isLoggedIn);
-  if (isLoggedIn) {
-    return myTabs();
-  } else {
+  if (!isLoggedIn) {
     return LoginStack();
+  } else {
+    // return myTabs();
+    return (
+      <Stack.Navigator
+        headerMode="none"
+        initialRouteName="ContactUs"
+        screenOptions={{
+          headerShown: false,
+          gestureEnabled: true,
+          cardOverlayEnabled: true,
+        }}>
+        <Stack.Screen name="myTab" component={MyTabs} />
+        <Stack.Screen name="EditProfileScreen" component={Editprofilescreen} />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="ResetPasswordScreen"
+          component={ResetPasswordScreen}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="DeleteAccountScreen"
+          component={DeleteAccountScreen}
+        />
+      </Stack.Navigator>
+    );
   }
 };
 export default Maintabnavigator;

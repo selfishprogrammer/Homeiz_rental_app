@@ -15,6 +15,9 @@ import {Cross, Icon} from '../../constants/Images';
 import Loader from '../../constants/Loader';
 import Auth from '../../services/Auth';
 import Services from '../../services/Services';
+import Successmodal from '../../components/SuccessModal';
+import {useDispatch} from 'react-redux';
+import {setLoggedIn} from '../../actions';
 export default function RegisterScreen({navigation}) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -28,7 +31,11 @@ export default function RegisterScreen({navigation}) {
 
   const [NameError, setNameError] = useState('');
   const [backendResponce, setbackendResponce] = useState('');
+  const [successResp, setsuccessResp] = useState('');
+
   const [isLoading, setisLoading] = useState(false);
+  const [successModal, setsuccessModal] = useState(false);
+  const dispatch = useDispatch();
   const resetErrorField = () => {
     setemailError('');
     setCpasswordError('');
@@ -44,6 +51,11 @@ export default function RegisterScreen({navigation}) {
     setPassword('');
     setCpassword('');
   };
+  const renderSuccessModal = () => {
+    if (successModal) {
+      return <Successmodal title={successResp} />;
+    }
+  };
   const register = async () => {
     resetErrorField();
     var email_val =
@@ -57,7 +69,7 @@ export default function RegisterScreen({navigation}) {
       setemailError('Field Can not be empty !');
     }
     if (phone.length <= 0) {
-      setemailError('Field Can not be empty !');
+      setPhoneError('Field Can not be empty !');
     }
     if (password.length <= 0) {
       setpasswordError('Field Can not be empty !');
@@ -83,12 +95,17 @@ export default function RegisterScreen({navigation}) {
           categories: 'users',
         };
         const responce = await Services.userRegister(userData);
-        await Auth.setUser(userData);
-        await Auth.setUserEmail(userData.email);
+
         console.log('data=====>', responce);
         if (responce.status === 'true') {
           resetInputField();
-          navigation.replace('LoginScreen');
+          await Auth.setUser(userData);
+          await Auth.setUserEmail(userData.email);
+          setsuccessResp(responce.data);
+          setsuccessModal(true);
+          setTimeout(() => {
+            dispatch(setLoggedIn(true));
+          }, 2000);
         } else {
           setbackendResponce(responce.data);
         }
@@ -98,13 +115,9 @@ export default function RegisterScreen({navigation}) {
   };
 
   return (
-    <ImageBackground
-      source={{
-        uri: 'https://wallpaperaccess.com/full/1700222.jpg',
-      }}
-      resizeMode="cover"
-      style={styles.searchImage}>
+    <View style={{flex: 1, backgroundColor: 'rgba(0, 57, 72, 1)'}}>
       <Loader spin={isLoading} />
+      {renderSuccessModal()}
       <ScrollView style={{flex: 1}}>
         <View style={styles.toastView}>
           {backendResponce !== '' ? (
@@ -254,6 +267,6 @@ export default function RegisterScreen({navigation}) {
           </View>
         </View>
       </ScrollView>
-    </ImageBackground>
+    </View>
   );
 }

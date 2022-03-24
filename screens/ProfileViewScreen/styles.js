@@ -1,8 +1,3 @@
-const React = require('react-native');
-import Colors from '../../constants/Colors';
-
-const {StyleSheet, Dimensions, Platform} = React;
-
 export default {
   searchImage: {
     flex: 1,
@@ -86,11 +81,11 @@ export default {
     fontFamily: 'math',
   },
   container: {
-    padding: 15,
-  },
-  screenContainer: {
-    backgroundColor: '#F2F3F4',
+    backgroundColor: 'rgba(253, 252, 252, 1)',
     flex: 1,
+    borderRadius: 10,
+    padding: 15,
+    margin: 10,
   },
   errorToast: {
     textAlign: 'center',
@@ -114,30 +109,10 @@ export default {
     marginLeft: 10,
     marginRight: 10,
   },
-  cameraContainer: {
-    marginRight: 'auto',
-    marginLeft: 'auto',
-  },
-  imgSubTxt: {
-    textAlign: 'center',
-    fontFamily: 'serif',
-    fontSize: 15,
-    marginTop: 5,
-    marginBottom: 10,
-    padding: 20,
-    color: 'black',
-  },
   errorMsg: {
     color: 'red',
     marginLeft: 15,
     fontFamily: 'serif',
-  },
-  queryTxt: {
-    height: 100,
-    marginTop: 15,
-    marginBottom: 5,
-    marginLeft: 10,
-    marginRight: 10,
   },
   forgotPass: {
     fontFamily: 'serif',
@@ -148,7 +123,7 @@ export default {
   loginBtn: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#DE4F1A',
+    backgroundColor: '#A5DE18',
     margin: 10,
     borderRadius: 5,
   },
@@ -156,8 +131,7 @@ export default {
     fontFamily: 'serif',
     marginLeft: 12,
     textAlign: 'center',
-    color: 'white',
-    fontWeight: 'bold',
+    color: 'black',
   },
   signUp: {
     color: 'black',
@@ -176,41 +150,33 @@ export default {
     textAlign: 'center',
     color: 'white',
     padding: 10,
-    fontSize: 15,
+    fontSize: 12,
     fontFamily: 'serif',
     fontWeight: 'bold',
   },
-  confirmModalContainer: {
-    flex: 1,
-    flexDirection: 'column',
+  button: {
+    borderWidth: 1,
+    borderColor: '#D8D8D8',
+    borderRadius: 10,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,.8)',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    borderRadius: 20,
+    padding: 10,
+    marginTop: 10,
+    marginBottom: 10,
   },
-  confirmModalContent: {
-    backgroundColor: '#fff',
-    width: '85%',
-    borderRadius: 8,
-    padding: 25,
-  },
-  confirmButTxt: {
-    color: Colors.cfmIconColor,
-    fontFamily: 'BlissPro-Bold',
-    fontSize: 18,
-    marginLeft: 15,
-  },
-  confirmfmText: {
-    fontSize: 17,
-    fontFamily: 'serif',
-    color: 'black',
-    fontWeight: 'normal',
+  btnTxt2: {
     textAlign: 'center',
-    marginBottom: 40,
+    paddingRight: 7,
+    color: 'black',
+    fontWeight: '700',
+    fontFamily: 'serif',
+  },
+  text2: {
+    textAlign: 'center',
+    fontFamily: 'serif',
+    marginTop: 40,
+    fontSize: 12,
+    color: 'black',
   },
 };

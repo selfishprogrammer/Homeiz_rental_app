@@ -10,12 +10,11 @@ import {TextInput} from 'react-native-paper';
 // import axios from 'axios';
 // import Loader from '../Others/Loader';
 import styles from './styles';
-import {Cross, Icon} from '../../constants/Images';
-import axios from 'axios';
 import Auth from '../../services/Auth';
 import Services from '../../services/Services';
 import Loader from '../../constants/Loader';
-import {setLoggedIn, setUserEmail} from '../../actions';
+import {setLoggedIn} from '../../actions';
+import {useDispatch} from 'react-redux';
 export default function LoginScreen({navigation}) {
   const [email, setemail] = useState('');
   const [emailError, setemailError] = useState('');
@@ -23,6 +22,7 @@ export default function LoginScreen({navigation}) {
   const [passwordError, setpasswordError] = useState('');
   const [backendResponce, setbackendResponce] = useState('');
   const [isLoading, setisLoading] = useState(false);
+  const dispatch = useDispatch();
   const login = async () => {
     var email_val =
       /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
@@ -47,14 +47,21 @@ export default function LoginScreen({navigation}) {
           password,
         };
         const responce = await Services.userLogin(userData);
-        await Auth.setUser(userData);
-        await Auth.setUserEmail(userData.email);
         console.log('data=====>', responce);
         if (responce.status === 'true') {
           setemail('');
           setpassword('');
-          setLoggedIn(true);
-          setUserEmail(email);
+          const loginData = {
+            name: responce.name,
+            email: responce.email,
+            phone: responce.phone,
+            categories: responce.categories,
+            password,
+          };
+          await Auth.setUser(loginData);
+          await Auth.setUserEmail(loginData.email);
+          console.log('loginData=====>', await Auth.getUser());
+          dispatch(setLoggedIn(true));
         } else {
           setbackendResponce(responce.data);
         }
@@ -63,110 +70,111 @@ export default function LoginScreen({navigation}) {
     }
   };
   return (
-    <ImageBackground
-      source={{
-        uri: 'https://wallpaperaccess.com/full/1700222.jpg',
-      }}
-      resizeMode="cover"
-      style={styles.searchImage}>
-      <View style={styles.container}>
-        {backendResponce !== '' ? (
-          <View
-            style={{
-              backgroundColor: '#D50000',
-              borderRadius: 10,
-              margin: 15,
-            }}>
-            <Text style={styles.toastTxt}>{backendResponce}</Text>
-          </View>
-        ) : null}
-
-        <Text style={styles.title}>Login</Text>
-        <Loader spin={isLoading} />
-
-        <TextInput
-          theme={{
-            colors: {
-              primary: 'blue',
-            },
-          }}
-          label="Email"
-          value={email}
-          onChangeText={e => setemail(e)}
-          style={styles.inputField}
-        />
-        {emailError != '' ? (
-          <View
-            style={{
-              marginRight: 10,
-              alignItems: 'center',
-              flexDirection: 'row',
-            }}>
-            <View>
-              <Text style={styles.errorMsg}>{emailError}</Text>
+    <View style={{flex: 1, backgroundColor: 'rgba(0, 57, 72, 1)'}}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+        }}>
+        <View style={styles.container}>
+          {backendResponce !== '' ? (
+            <View
+              style={{
+                backgroundColor: '#D50000',
+                borderRadius: 10,
+                margin: 15,
+              }}>
+              <Text style={styles.toastTxt}>{backendResponce}</Text>
             </View>
-          </View>
-        ) : null}
-        <TextInput
-          theme={{
-            colors: {
-              primary: 'blue',
-            },
-          }}
-          label="Password"
-          secure={true}
-          passwordField={true}
-          secureTextEntry
-          value={password}
-          onChangeText={e => setpassword(e)}
-          style={styles.inputField}
-        />
-        {passwordError != '' ? (
-          <View
-            style={{
-              marginRight: 10,
-              alignItems: 'center',
-              flexDirection: 'row',
-            }}>
-            <View>
-              <Text style={styles.errorMsg}>{passwordError}</Text>
+          ) : null}
+
+          <Text style={styles.title}>Login</Text>
+          <Loader spin={isLoading} />
+
+          <TextInput
+            theme={{
+              colors: {
+                primary: 'blue',
+              },
+            }}
+            label="Email"
+            value={email}
+            onChangeText={e => setemail(e)}
+            style={styles.inputField}
+          />
+          {emailError != '' ? (
+            <View
+              style={{
+                marginRight: 10,
+                alignItems: 'center',
+                flexDirection: 'row',
+              }}>
+              <View>
+                <Text style={styles.errorMsg}>{emailError}</Text>
+              </View>
             </View>
-          </View>
-        ) : null}
+          ) : null}
+          <TextInput
+            theme={{
+              colors: {
+                primary: 'blue',
+              },
+            }}
+            label="Password"
+            secure={true}
+            passwordField={true}
+            secureTextEntry
+            value={password}
+            onChangeText={e => setpassword(e)}
+            style={styles.inputField}
+          />
+          {passwordError != '' ? (
+            <View
+              style={{
+                marginRight: 10,
+                alignItems: 'center',
+                flexDirection: 'row',
+              }}>
+              <View>
+                <Text style={styles.errorMsg}>{passwordError}</Text>
+              </View>
+            </View>
+          ) : null}
 
-        <TouchableOpacity style={{paddingTop: 10}}>
-          <Text
-            onPress={() => navigation.navigate('ForgotPasswordScreen')}
-            style={styles.forgotPass}>
-            Forgot Password ?
-          </Text>
-        </TouchableOpacity>
-
-        <View style={styles.loginBtn}>
-          <TouchableOpacity
-            style={{justifyContent: 'center', height: 50, width: '100%'}}>
-            <Text style={styles.lgnbtnTxt} onPress={() => login()}>
-              Login
+          <TouchableOpacity style={{paddingTop: 10}}>
+            <Text
+              onPress={() => navigation.navigate('ForgotPasswordScreen')}
+              style={styles.forgotPass}>
+              Forgot Password ?
             </Text>
           </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
 
-            paddingBottom: 15,
-          }}>
-          <Text style={{color: 'black'}}>
-            New to Homeies ?{' '}
-            <Text
-              onPress={() => navigation.replace('RegisterScreen')}
-              style={styles.signUp}>
-              Signup Here
+          <View style={styles.loginBtn}>
+            <TouchableOpacity
+              style={{justifyContent: 'center', height: 50, width: '100%'}}>
+              <Text style={styles.lgnbtnTxt} onPress={() => login()}>
+                Login
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+
+              paddingBottom: 15,
+            }}>
+            <Text style={{color: 'black'}}>
+              New to Homeies ?{' '}
+              <Text
+                onPress={() => navigation.replace('RegisterScreen')}
+                style={styles.signUp}>
+                Signup Here
+              </Text>
             </Text>
-          </Text>
+          </View>
         </View>
       </View>
-    </ImageBackground>
+    </View>
   );
 }

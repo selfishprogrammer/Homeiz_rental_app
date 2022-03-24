@@ -1,16 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-  FlatList,
-  TouchableOpacity,
-  TextInput,
-  Image,
-} from 'react-native';
+import {StyleSheet, View, TextInput, Image} from 'react-native';
 export default function SearchBar() {
   const [query, setQuery] = useState();
   return (
@@ -76,9 +65,9 @@ const styles = StyleSheet.create({
     height: 60,
     flexDirection: 'row',
     marginTop: 5,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: 'black',
+    borderRadius: 20,
+    borderWidth: 0.5,
+    borderColor: 'grey',
   },
   container: {
     height: 80,

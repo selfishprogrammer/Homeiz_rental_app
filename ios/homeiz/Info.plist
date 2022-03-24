@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+<key>NSCameraUsageDescription</key>
+  <string>YOUR TEXT</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -20,9 +22,27 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	  <key>NSCameraUsageDescription</key>
+  <string>Enable Your Camera To Use Our App</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+  <string>Enable Your Camera To Use Our App</string>
+  <key>NSMicrophoneUsageDescription</key>
+  <string>Enable Your Camera To Use Our App</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+  <string>YOUR TEXT</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>EZTracker would like to access your current location to determine if you are scanning the authorized Material</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>EZTracker would like to access your current location to determine if you are scanning the authorized Material</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>EZTracker would like to access your current location to determine if you are scanning the authorized Material</string>
 	<key>LSRequiresIPhoneOS</key>
+	 <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>YOUR TEXT</string>
+  <key>NSLocationAlwaysUsageDescription</key>
+  <string>YOUR TEXT</string>
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
