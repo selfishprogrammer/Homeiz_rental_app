@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-native/no-inline-styles */
 import {useIsFocused} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
 import {
@@ -11,27 +13,30 @@ import {
   Linking,
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import Geocoder from 'react-native-geocoding';
 import {Card} from 'react-native-elements';
 import SearchBar from '../../components/SearchBar';
-import {logo} from '../../constants/Images';
+import {homeiz_logo} from '../../constants/Images';
 import Permission from '../../constants/Permission';
-import FooterScreen from '../FooterScreeen/FooterScreen';
 import styles from './styles';
-const Homescreen = () => {
+import Auth from '../../services/Auth';
+import Services from '../../services/Services';
+import FetchingHouseScreen from '../../NoRecordFoundScreen/FetchingHouseScreen';
+import NoRecordFoundScreen from '../../NoRecordFoundScreen/NoRecordFoundScreen';
+import Header from '../../components/Header';
+
+const Homescreen = ({navigation}) => {
   const isFocused = useIsFocused();
   useEffect(() => {
-    Geocoder.from(longitude, latitude)
-      .then(resp => console.log('responce====>', resp))
-      .catch(err => console.log('Error====>', err));
     checkLocationPermission();
     if (isFocused) {
       checkLocationPermission();
     }
   }, [isFocused]);
-  const [hasLocationPermission, sethasLocationPermission] = useState(false);
-  const [latitude, setlatitude] = useState('');
-  const [longitude, setlongitude] = useState('');
+  const [houses, sethouses] = useState([]);
+  // const [isLoading, setisLoading] = useState(false);
+  // const [hasLocationPermission, sethasLocationPermission] = useState(false);
+  const [houseAva, sethouseAva] = useState('');
+
   const checkLocationPermission = async () => {
     const hasLocation = await Permission.hasLocationPermission();
     console.log('hasLocation', hasLocation);
@@ -40,7 +45,6 @@ const Homescreen = () => {
         .then(hasLocationPermission => {
           console.log('hasLocationPermission ==>>>>', hasLocationPermission);
           if (hasLocationPermission) {
-            sethasLocationPermission(true);
             getLongLat();
           } else {
             deniedAlert(
@@ -50,6 +54,8 @@ const Homescreen = () => {
           }
         })
         .catch(err => console.log(err));
+    } else {
+      getLongLat();
     }
   };
   const deniedAlert = (title, msg) => {
@@ -75,12 +81,20 @@ const Homescreen = () => {
       Linking.openSettings();
     }
   };
-  const getLongLat = () => {
+  const getLongLat = async () => {
     Geolocation.getCurrentPosition(
       position => {
         console.log(position.coords.latitude);
-        setlatitude(position.coords.latitude);
-        setlongitude(position.coords.longitude);
+
+        const latLong = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        updateLatLongInUsersTable(
+          position.coords.latitude,
+          position.coords.longitude,
+        );
+        Auth.setLatLong(latLong);
       },
       error => {
         deniedAlert(
@@ -91,79 +105,156 @@ const Homescreen = () => {
       {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
   };
+  const updateLatLongInUsersTable = async (latitude, longitude) => {
+    const email = await Auth.getUserEmail();
+    console.log('email===>', email);
+    const latLongData = await Services.latLong({latitude, longitude, email});
+    console.log('locationData=====>', latLongData);
+    if (latLongData.status === 'true') {
+      Auth.setLatLong({latitude, longitude});
+      getHouseByLocation();
+    } else {
+      Alert.alert('error', latLongData.data);
+    }
+  };
+  const getHouseByLocation = async () => {
+    const latLong = await Auth.getLatLong();
+    const locationData = {
+      search_based_on: 'location',
+      latitude: Math.floor(latLong.latitude),
+      longitude: Math.floor(latLong.longitude),
+      state: '',
+      district: '',
+    };
+    const houseData = await Services.getHouseBasedOnLocation(locationData);
+    console.log('data=====>>>>', houseData);
+
+    if (houseData.status === 'false') {
+      // checkLocationPermission();
+      sethouseAva(false);
+    } else {
+      sethouseAva(true);
+      sethouses(houseData);
+    }
+  };
+  const renderHouse = () => {
+    if (houseAva === '') {
+      return <FetchingHouseScreen />;
+    } else {
+      return <NoRecordFoundScreen />;
+    }
+  };
   return (
-    <ScrollView style={{flex: 1, backgroundColor: 'rgba(0, 57, 72, 1)'}}>
-      <View style={styles.toastView}>
-        <View style={styles.logoContainer}>
-          <Image style={styles.logo} source={logo} />
+    <>
+      <Header />
+      <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
+        <View style={styles.toastView}>
+          <View style={styles.logoContainer}>
+            <Image style={styles.logo} source={homeiz_logo} />
+          </View>
+          <SearchBar />
         </View>
-        <SearchBar />
-      </View>
-      {/* <View style={styles.offerContainer}>
+        {/* <Loader spin={isLoading} /> */}
+        {/* <View style={styles.offerContainer}>
         <Image
           source={{uri: 'http://www.oclicker.com/uploads/Mayfair_Offer.jpg'}}
           style={styles.offerImg}
         />
       </View> */}
-      <Card>
-        <Card.Title>PAYAL HOUSES</Card.Title>
+        {houseAva
+          ? houses.map((house, key) => {
+              return (
+                <Card
+                  containerStyle={{
+                    borderRadius: 10,
+                    elevation: 10,
+                    borderWidth: 0,
+                    marginHorizontal: 20,
+                  }}>
+                  <Card.Title>
+                    <Text style={{fontFamily: 'BlissPro-Bold'}}>
+                      {house.flat_name}
+                    </Text>
+                  </Card.Title>
 
-        <Image
-          source={{
-            uri: 'https://english.cdn.zeenews.com/sites/default/files/styles/zm_700x400/public/2020/12/25/907391-housing-pixabat.jpg',
-          }}
-          style={styles.houseImg}
-        />
-        <View
-          style={{
-            flexDirection: 'row',
-            marginTop: 10,
-            justifyContent: 'space-between',
-          }}>
-          <Text style={styles.bhk}>33.50L-50L</Text>
-          <Text style={styles.bhk}>2000-3000 sqft</Text>
-          <Text style={styles.bhk}>2BHK</Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginTop: 10,
-            justifyContent: 'space-between',
-          }}>
-          <TouchableOpacity style={styles.distanceClick}>
-            <Text style={styles.nearBy}>10 Nearby place</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.distanceClick}>
-            <Text style={styles.nearBy}>10 Nearby place</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.distanceClick}>
-            <Text style={styles.nearBy}>10 Nearby place</Text>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.shortAdd}>
-          Experience a new style of living with Amaya Residences.
-        </Text>
-        <Text style={styles.addRess}>Kestopur Near D-MERN BILRA 734001</Text>
+                  <Image
+                    source={{
+                      uri: house.image_1,
+                    }}
+                    style={styles.houseImg}
+                  />
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginTop: 10,
+                      justifyContent: 'space-between',
+                    }}>
+                    <Text style={styles.bhk}>
+                      <Image
+                        source={{
+                          uri: 'https://icon-library.com/images/rupee-icon/rupee-icon-16.jpg',
+                        }}
+                        style={{width: 20, height: 20}}
+                      />{' '}
+                      {Math.floor(house.real_price)}{' '}
+                    </Text>
+                    <Text style={styles.bhk}>{house.sqft} sqft</Text>
+                    <Text style={styles.bhk}>{house.bhk}</Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginTop: 10,
+                      justifyContent: 'space-between',
+                    }}>
+                    <TouchableOpacity style={styles.distanceClick}>
+                      <Text style={styles.nearBy}>10 Nearby place</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.distanceClick}>
+                      <Text style={styles.nearBy}>10 Nearby place</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.distanceClick}>
+                      <Text style={styles.nearBy}>10 Nearby place</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <Text style={styles.shortAdd}>{house.house_details}</Text>
+                  <Text style={styles.addRess}>
+                    {house.home_address} {house.pin_code}
+                  </Text>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            marginTop: 20,
-          }}>
-          <TouchableOpacity
-            style={styles.btnContainer}
-            onPress={() => {
-              console.log('object');
-            }}>
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-              <Text style={styles.btnTxt}>Explore</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </Card>
-      <FooterScreen />
-    </ScrollView>
+                  <View
+                    style={{
+                      marginTop: 20,
+                    }}>
+                    <TouchableOpacity
+                      style={[styles.btnContainer, {backgroundColor: '#fff'}]}
+                      onPress={() => {
+                        navigation.navigate('ExploreScreen', {
+                          flat_id: house.flat_id,
+                        });
+                      }}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                        }}>
+                        <Text
+                          style={[
+                            styles.btnTxt,
+                            {color: 'black', fontFamily: 'BlissPro-Bold'},
+                          ]}>
+                          Explore More
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </Card>
+              );
+            })
+          : renderHouse()}
+        {/* <FooterScreen /> */}
+      </ScrollView>
+    </>
   );
 };
 // AIzaSyAyXIOzBki19oh2xH4xm6bJStl809cQcSs

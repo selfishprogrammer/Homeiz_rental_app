@@ -1,20 +1,14 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  ImageBackground,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import {TextInput} from 'react-native-paper';
-// import axios from 'axios';
-// import Loader from '../Others/Loader';
 import styles from './styles';
 import Auth from '../../services/Auth';
 import Services from '../../services/Services';
 import Loader from '../../constants/Loader';
-import {setLoggedIn} from '../../actions';
+import {setLoggedIn, setOwnerLogin, setSkipLogin} from '../../actions';
 import {useDispatch} from 'react-redux';
+import Logo from '../../components/Logo';
 export default function LoginScreen({navigation}) {
   const [email, setemail] = useState('');
   const [emailError, setemailError] = useState('');
@@ -61,6 +55,10 @@ export default function LoginScreen({navigation}) {
           await Auth.setUser(loginData);
           await Auth.setUserEmail(loginData.email);
           console.log('loginData=====>', await Auth.getUser());
+          if (responce.categories === 'owner') {
+            dispatch(setLoggedIn(true));
+            dispatch(setOwnerLogin(true));
+          }
           dispatch(setLoggedIn(true));
         } else {
           setbackendResponce(responce.data);
@@ -69,112 +67,132 @@ export default function LoginScreen({navigation}) {
       }
     }
   };
+  const skip_login = () => {
+    setisLoading(true);
+    setTimeout(() => {
+      setisLoading(false);
+      dispatch(setLoggedIn(true));
+      dispatch(setSkipLogin(true));
+    }, 2000);
+  };
   return (
-    <View style={{flex: 1, backgroundColor: 'rgba(0, 57, 72, 1)'}}>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-        }}>
-        <View style={styles.container}>
-          {backendResponce !== '' ? (
-            <View
-              style={{
-                backgroundColor: '#D50000',
-                borderRadius: 10,
-                margin: 15,
-              }}>
-              <Text style={styles.toastTxt}>{backendResponce}</Text>
-            </View>
-          ) : null}
-
-          <Text style={styles.title}>Login</Text>
-          <Loader spin={isLoading} />
-
-          <TextInput
-            theme={{
-              colors: {
-                primary: 'blue',
-              },
-            }}
-            label="Email"
-            value={email}
-            onChangeText={e => setemail(e)}
-            style={styles.inputField}
-          />
-          {emailError != '' ? (
-            <View
-              style={{
-                marginRight: 10,
-                alignItems: 'center',
-                flexDirection: 'row',
-              }}>
-              <View>
-                <Text style={styles.errorMsg}>{emailError}</Text>
+    <View style={{flex: 1, backgroundColor: '#fff'}}>
+      <ScrollView>
+        <Logo />
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+          }}>
+          <View style={styles.container}>
+            {backendResponce !== '' ? (
+              <View
+                style={{
+                  backgroundColor: '#D50000',
+                  borderRadius: 10,
+                  margin: 15,
+                }}>
+                <Text style={styles.toastTxt}>{backendResponce}</Text>
               </View>
-            </View>
-          ) : null}
-          <TextInput
-            theme={{
-              colors: {
-                primary: 'blue',
-              },
-            }}
-            label="Password"
-            secure={true}
-            passwordField={true}
-            secureTextEntry
-            value={password}
-            onChangeText={e => setpassword(e)}
-            style={styles.inputField}
-          />
-          {passwordError != '' ? (
-            <View
-              style={{
-                marginRight: 10,
-                alignItems: 'center',
-                flexDirection: 'row',
-              }}>
-              <View>
-                <Text style={styles.errorMsg}>{passwordError}</Text>
+            ) : null}
+
+            <Text style={styles.title}>Login</Text>
+            <Loader spin={isLoading} />
+
+            <TextInput
+              theme={{
+                colors: {
+                  primary: 'blue',
+                },
+              }}
+              label="Email"
+              value={email}
+              onChangeText={e => setemail(e)}
+              style={styles.inputField}
+            />
+            {emailError != '' ? (
+              <View
+                style={{
+                  marginRight: 10,
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                }}>
+                <View>
+                  <Text style={styles.errorMsg}>{emailError}</Text>
+                </View>
               </View>
-            </View>
-          ) : null}
+            ) : null}
+            <TextInput
+              theme={{
+                colors: {
+                  primary: 'blue',
+                },
+              }}
+              label="Password"
+              secure={true}
+              passwordField={true}
+              secureTextEntry
+              value={password}
+              onChangeText={e => setpassword(e)}
+              style={styles.inputField}
+            />
+            {passwordError != '' ? (
+              <View
+                style={{
+                  marginRight: 10,
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                }}>
+                <View>
+                  <Text style={styles.errorMsg}>{passwordError}</Text>
+                </View>
+              </View>
+            ) : null}
 
-          <TouchableOpacity style={{paddingTop: 10}}>
-            <Text
-              onPress={() => navigation.navigate('ForgotPasswordScreen')}
-              style={styles.forgotPass}>
-              Forgot Password ?
-            </Text>
-          </TouchableOpacity>
-
-          <View style={styles.loginBtn}>
-            <TouchableOpacity
-              style={{justifyContent: 'center', height: 50, width: '100%'}}>
-              <Text style={styles.lgnbtnTxt} onPress={() => login()}>
-                Login
+            <TouchableOpacity style={{paddingTop: 10}}>
+              <Text
+                onPress={() => navigation.navigate('ForgotPasswordScreen')}
+                style={styles.forgotPass}>
+                Forgot Password ?
               </Text>
             </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
 
-              paddingBottom: 15,
-            }}>
-            <Text style={{color: 'black'}}>
-              New to Homeies ?{' '}
-              <Text
-                onPress={() => navigation.replace('RegisterScreen')}
-                style={styles.signUp}>
-                Signup Here
+            <View style={styles.loginBtn}>
+              <TouchableOpacity
+                style={{justifyContent: 'center', height: 50, width: '100%'}}>
+                <Text style={styles.lgnbtnTxt} onPress={() => login()}>
+                  Login
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={[styles.loginBtn, {backgroundColor: 'red'}]}>
+              <TouchableOpacity
+                style={{justifyContent: 'center', height: 50, width: '100%'}}>
+                <Text
+                  style={[styles.lgnbtnTxt, {color: '#fff'}]}
+                  onPress={() => skip_login()}>
+                  Skip Login
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                paddingBottom: 15,
+              }}>
+              <Text style={{color: 'black', fontFamily: 'BlissPro'}}>
+                New to Homeies ?{' '}
+                <Text
+                  onPress={() => navigation.replace('RegisterScreen')}
+                  style={styles.signUp}>
+                  Signup Here
+                </Text>
               </Text>
-            </Text>
+            </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }

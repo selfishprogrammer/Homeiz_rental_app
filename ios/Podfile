@@ -12,6 +12,8 @@ target 'homeiz' do
     :hermes_enabled => false
   )
 
+  pod 'ReactNativeGetLocation', :path => '../node_modules/react-native-get-location'
+
   target 'homeizTests' do
     inherit! :complete
     # Pods for testing

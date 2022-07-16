@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {useNavigation} from '@react-navigation/core';
 import React, {useState} from 'react';
 import {View, Modal, Text, Image, TouchableOpacity} from 'react-native';

@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import {PermissionsAndroid, Platform, Text, View} from 'react-native';
+import {PermissionsAndroid, Platform} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
 export default class Permission {

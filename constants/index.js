@@ -5,4 +5,7 @@ export default tokeys([
   'LOGIN_USER',
   'SET_USER_EMAIL',
   'SET_USER',
+  'LOCATION_COORDS',
+  'SKIP_LOGIN',
+  'OWNER_LOGIN',
 ]);

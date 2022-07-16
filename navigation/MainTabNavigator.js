@@ -1,6 +1,6 @@
-import React from 'react';
-import {View, StyleSheet, Text, Image} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useEffect, useState} from 'react';
+import {Text, Image} from 'react-native';
 import {useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
@@ -14,6 +14,15 @@ import Profileviewscreen from '../screens/ProfileViewScreen/ProfileViewScreen';
 import Editprofilescreen from '../screens/EditProfileScreen/EditProfileScreen';
 import Housescreen from '../screens/HouseScreen/HouseScreen';
 import DeleteAccountScreen from '../screens/DeleteAccountScreen/DeleteAccountScreen';
+import Explorescreen from '../screens/ExploreScreen/ExploreScreen';
+import OtpScreen from '../screens/OtpScreen/OtpScreen';
+import Mapview from '../components/MapView';
+import HousesForRent from '../screens/HomeScreen/HousesForRent';
+import ImagesScreen from '../screens/ImagesScreen/ImagesScreen';
+import OwnerHomeScreen from '../screens/OwnerPanel/OwnerHomeScreen';
+import AddHousesScreen from '../screens/OwnerPanel/AddHousesScreen';
+import OwnerProfileScreen from '../screens/OwnerPanel/OwnerProfileScreen';
+import ViewRequestScreen from '../screens/OwnerPanel/ViewRequestScreen';
 const Stack = createNativeStackNavigator();
 
 const LoginStack = () => {
@@ -46,9 +55,15 @@ const LoginStack = () => {
         name="ResetPasswordScreen"
         component={ResetPasswordScreen}
       />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="OtpScreen"
+        component={OtpScreen}
+      />
     </Stack.Navigator>
   );
 };
+// Coustmer Navigation
 const HomeStack = () => {
   return (
     <Stack.Navigator
@@ -86,7 +101,6 @@ const ContactStack = () => {
     </Stack.Navigator>
   );
 };
-
 const ProfileStack = () => {
   return (
     <Stack.Navigator
@@ -109,7 +123,7 @@ const HouseStack = () => {
   return (
     <Stack.Navigator
       headerMode="none"
-      initialRouteName="HouseScreen"
+      initialRouteName="HousesForRent"
       screenOptions={{
         headerShown: false,
         gestureEnabled: true,
@@ -117,8 +131,65 @@ const HouseStack = () => {
       }}>
       <Stack.Screen
         options={{headerShown: false}}
-        name="HouseScreen"
-        component={Housescreen}
+        name="HousesForRent"
+        component={HousesForRent}
+      />
+    </Stack.Navigator>
+  );
+};
+
+// OwnerNavigation
+
+const OwnerHomeStack = () => {
+  return (
+    <Stack.Navigator
+      headerMode="none"
+      initialRouteName="OwnerHomeScreen"
+      screenOptions={{
+        headerShown: false,
+        gestureEnabled: true,
+        cardOverlayEnabled: true,
+      }}>
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="OwnerHomeScreen"
+        component={OwnerHomeScreen}
+      />
+    </Stack.Navigator>
+  );
+};
+const AddHouseStack = () => {
+  return (
+    <Stack.Navigator
+      headerMode="none"
+      initialRouteName="OwnerHousesForRent"
+      screenOptions={{
+        headerShown: false,
+        gestureEnabled: true,
+        cardOverlayEnabled: true,
+      }}>
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="OwnerHousesForRent"
+        component={AddHousesScreen}
+      />
+    </Stack.Navigator>
+  );
+};
+const OwnerProfileStack = () => {
+  return (
+    <Stack.Navigator
+      headerMode="none"
+      initialRouteName="OwnerProfileScreen"
+      screenOptions={{
+        headerShown: false,
+        gestureEnabled: true,
+        cardOverlayEnabled: true,
+      }}>
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="OwnerProfileScreen"
+        component={OwnerProfileScreen}
       />
     </Stack.Navigator>
   );
@@ -135,10 +206,10 @@ const MyTabs = () => {
       screenOptions={{
         headerShown: false,
       }}
-      // eslint-disable-next-line react-native/no-inline-styles
       barStyle={{
-        backgroundColor: '#EAECEE',
+        backgroundColor: '#fff',
         height: 55,
+        elevation: 10,
       }}>
       <Bottom.Screen
         name="Home"
@@ -157,11 +228,11 @@ const MyTabs = () => {
       />
 
       <Bottom.Screen
-        name="House"
+        name="HousesForRent"
         component={HouseStack}
         options={{
           headerShown: true,
-          tabBarLabel: <Text style={{fontFamily: 'serif'}}>Houses</Text>,
+          tabBarLabel: <Text style={{fontFamily: 'serif'}}>Rent Houses</Text>,
           tabBarIcon: ({color}) => (
             <Image
               style={{height: 22, width: 22}}
@@ -172,6 +243,7 @@ const MyTabs = () => {
           ),
         }}
       />
+
       <Bottom.Screen
         name="contact"
         component={ContactStack}
@@ -205,36 +277,166 @@ const MyTabs = () => {
     </Bottom.Navigator>
   );
 };
+
+const OwnerMyTabs = () => {
+  const Bottom = createMaterialBottomTabNavigator();
+
+  return (
+    <Bottom.Navigator
+      initialRouteName="OwnerHomeScreen"
+      sceneAnimationEnabled={true}
+      activeColor="black"
+      inactiveColor="#EAECEE"
+      screenOptions={{
+        headerShown: false,
+      }}
+      barStyle={{
+        backgroundColor: '#fff',
+        height: 55,
+        elevation: 10,
+      }}>
+      <Bottom.Screen
+        name="Home"
+        component={OwnerHomeStack}
+        options={{
+          tabBarLabel: <Text style={{fontFamily: 'serif'}}>Home</Text>,
+          tabBarIcon: ({color}) => (
+            <Image
+              style={{height: 22, width: 22}}
+              source={{
+                uri: 'https://cdn-icons-png.flaticon.com/512/25/25694.png',
+              }}
+            />
+          ),
+        }}
+      />
+
+      <Bottom.Screen
+        name="House Rent"
+        component={AddHouseStack}
+        options={{
+          headerShown: true,
+          tabBarLabel: <Text style={{fontFamily: 'serif'}}>Rent Houses</Text>,
+          tabBarIcon: ({color}) => (
+            <Image
+              style={{height: 22, width: 22}}
+              source={{
+                uri: 'https://cdn2.iconfinder.com/data/icons/buildings-glyph-8/32/for_rent_house-512.png',
+              }}
+            />
+          ),
+        }}
+      />
+
+      <Bottom.Screen
+        name="Profile"
+        component={OwnerProfileStack}
+        options={{
+          tabBarLabel: <Text style={{fontFamily: 'serif'}}>Profile</Text>,
+          tabBarIcon: ({color}) => (
+            <Image
+              style={{height: 22, width: 22}}
+              source={{
+                uri: 'https://icon-library.com/images/profile-png-icon/profile-png-icon-2.jpg',
+              }}
+            />
+          ),
+        }}
+      />
+    </Bottom.Navigator>
+  );
+};
+
 const Maintabnavigator = () => {
-  const isLoggedIn = useSelector(state => state.reducer.isLoggedIn);
-  console.log('login status===>', isLoggedIn);
+  const {isLoggedIn, skipLogin, ownerLogin} = useSelector(
+    state => state.reducer,
+  );
+  console.log('login status===>', isLoggedIn, skipLogin);
   if (!isLoggedIn) {
     return LoginStack();
-  } else {
+  } else if (isLoggedIn || skipLogin) {
     // return myTabs();
-    return (
-      <Stack.Navigator
-        headerMode="none"
-        initialRouteName="ContactUs"
-        screenOptions={{
-          headerShown: false,
-          gestureEnabled: true,
-          cardOverlayEnabled: true,
-        }}>
-        <Stack.Screen name="myTab" component={MyTabs} />
-        <Stack.Screen name="EditProfileScreen" component={Editprofilescreen} />
-        <Stack.Screen
-          options={{headerShown: false}}
-          name="ResetPasswordScreen"
-          component={ResetPasswordScreen}
-        />
-        <Stack.Screen
-          options={{headerShown: false}}
-          name="DeleteAccountScreen"
-          component={DeleteAccountScreen}
-        />
-      </Stack.Navigator>
-    );
+    console.log('ownerLogin===>', ownerLogin);
+    if (isLoggedIn && ownerLogin) {
+      return (
+        <Stack.Navigator
+          headerMode="none"
+          initialRouteName="OwnerHomeScreen"
+          screenOptions={{
+            headerShown: false,
+            gestureEnabled: true,
+            cardOverlayEnabled: true,
+          }}>
+          <Stack.Screen name="OwnerTab" component={OwnerMyTabs} />
+          <Stack.Screen
+            name="EditProfileScreen"
+            component={Editprofilescreen}
+          />
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="ResetPasswordScreen"
+            component={ResetPasswordScreen}
+          />
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="DeleteAccountScreen"
+            component={DeleteAccountScreen}
+          />
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="ViewRequestScreen"
+            component={ViewRequestScreen}
+          />
+        </Stack.Navigator>
+      );
+    } else {
+      return (
+        <Stack.Navigator
+          headerMode="none"
+          initialRouteName="ContactUs"
+          screenOptions={{
+            headerShown: false,
+            gestureEnabled: true,
+            cardOverlayEnabled: true,
+          }}>
+          <Stack.Screen name="myTab" component={MyTabs} />
+          <Stack.Screen
+            name="EditProfileScreen"
+            component={Editprofilescreen}
+          />
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="ResetPasswordScreen"
+            component={ResetPasswordScreen}
+          />
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="DeleteAccountScreen"
+            component={DeleteAccountScreen}
+          />
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="ExploreScreen"
+            component={Explorescreen}
+          />
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="MapScreen"
+            component={Mapview}
+          />
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="HouseScreen"
+            component={Housescreen}
+          />
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="ImageScreen"
+            component={ImagesScreen}
+          />
+        </Stack.Navigator>
+      );
+    }
   }
 };
 export default Maintabnavigator;

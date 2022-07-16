@@ -1,12 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 import styles from './styles';
 
 const Filters = () => {
@@ -15,7 +9,6 @@ const Filters = () => {
     if (showMore) {
       return (
         <>
-          {byCrimeRates()}
           {byBhk()}
           {bySqFt()}
           {lowToHigh()}
@@ -23,55 +16,34 @@ const Filters = () => {
       );
     }
   };
-  const byCrimeRates = () => {
-    return (
-      <View style={styles.filterCont}>
-        <Text style={styles.filterTxt}>Customize By Crime Rate</Text>
-        <ScrollView
-          horizontal={true}
-          contentContainerStyle={{
-            flexDirection: 'row',
-            marginVertical: 10,
-            justifyContent: 'space-between',
-          }}>
-          <TouchableOpacity style={styles.distanceClick}>
-            <Text style={styles.nearBy}>0%-25%</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.distanceClick}>
-            <Text style={styles.nearBy}>26%-60%</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.distanceClick}>
-            <Text style={styles.nearBy}>61%-90%</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </View>
-    );
-  };
+
   const byBhk = () => {
     return (
       <View style={styles.filterCont}>
         <Text style={styles.filterTxt}>Customize By BHK</Text>
         <ScrollView
           horizontal={true}
+          showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
             flexDirection: 'row',
             marginVertical: 10,
             justifyContent: 'space-between',
+            overFlowX: 'auto',
           }}>
-          <TouchableOpacity style={styles.distanceClick}>
-            <Text style={styles.nearBy}>1BHK</Text>
+          <TouchableOpacity style={[styles.distanceClick, {padding: 5}]}>
+            <Text style={styles.nearBy}>1 BHK</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.distanceClick}>
-            <Text style={styles.nearBy}>2BHK</Text>
+          <TouchableOpacity style={[styles.distanceClick, {padding: 5}]}>
+            <Text style={styles.nearBy}>2 BHK</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.distanceClick}>
-            <Text style={styles.nearBy}>3BHK</Text>
+          <TouchableOpacity style={[styles.distanceClick, {padding: 5}]}>
+            <Text style={styles.nearBy}>3 BHK</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.distanceClick}>
-            <Text style={styles.nearBy}>4BHK</Text>
+          <TouchableOpacity style={[styles.distanceClick, {padding: 5}]}>
+            <Text style={styles.nearBy}>4 BHK</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.distanceClick}>
-            <Text style={styles.nearBy}>4+BHK</Text>
+          <TouchableOpacity style={[styles.distanceClick, {padding: 5}]}>
+            <Text style={styles.nearBy}>4+ BHK</Text>
           </TouchableOpacity>
         </ScrollView>
       </View>
@@ -83,19 +55,20 @@ const Filters = () => {
         <Text style={styles.filterTxt}>Customize By Sqft</Text>
         <ScrollView
           horizontal={true}
+          showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
             flexDirection: 'row',
             marginVertical: 10,
             justifyContent: 'space-between',
           }}>
           <TouchableOpacity style={styles.distanceClick}>
-            <Text style={styles.nearBy}>1K - 2k</Text>
+            <Text style={styles.nearBy}>Between 1000 sqft</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.distanceClick}>
-            <Text style={styles.nearBy}>2.5K - 3.5K</Text>
+            <Text style={styles.nearBy}>Between 2000 sqft</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.distanceClick}>
-            <Text style={styles.nearBy}>4K - 6K</Text>
+            <Text style={styles.nearBy}>Between 4000 sqft</Text>
           </TouchableOpacity>
         </ScrollView>
       </View>
@@ -107,6 +80,7 @@ const Filters = () => {
         <Text style={styles.filterTxt}>Customize By Low To High</Text>
         <ScrollView
           horizontal={true}
+          showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
             flexDirection: 'row',
             marginVertical: 10,
@@ -119,7 +93,7 @@ const Filters = () => {
             <Text style={styles.nearBy}>High To Low</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.distanceClick}>
-            <Text style={styles.nearBy}>Serial Wise</Text>
+            <Text style={styles.nearBy}>Rating Wise</Text>
           </TouchableOpacity>
         </ScrollView>
       </View>
@@ -159,7 +133,7 @@ const Filters = () => {
   return (
     <View>
       <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-        <Text style={{fontFamily: 'serif'}}>
+        <Text style={{fontFamily: 'BlissPro-Bold'}}>
           Customize Your Search (Filters)
         </Text>
         {renderArrowIcon()}

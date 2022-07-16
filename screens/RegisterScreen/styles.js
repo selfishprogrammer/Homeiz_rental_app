@@ -153,6 +153,7 @@ export default {
     padding: 5,
     borderRadius: 5,
     paddingBottom: 10,
+    borderWidth: 0.2,
   },
   toastTxt: {
     textAlign: 'center',

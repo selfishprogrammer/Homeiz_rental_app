@@ -12,6 +12,9 @@ export default class Auth {
   static setUserEmail = async data => {
     await AsyncStorage.setItem('usersEmail', JSON.stringify(data));
   };
+  static setLatLong = async data => {
+    await AsyncStorage.setItem('latlong', JSON.stringify(data));
+  };
   static getUser = async () => {
     const data = await AsyncStorage.getItem('users');
     if (!data) {
@@ -30,6 +33,14 @@ export default class Auth {
   };
   static getUserEmail = async () => {
     const data = await AsyncStorage.getItem('usersEmail');
+    if (!data) {
+      return null;
+    } else {
+      return JSON.parse(data);
+    }
+  };
+  static getLatLong = async () => {
+    const data = await AsyncStorage.getItem('latlong');
     if (!data) {
       return null;
     } else {

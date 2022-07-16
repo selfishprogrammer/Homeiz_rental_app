@@ -1,2 +1,2 @@
-const base_url = 'http://192.168.64.2/Homiez/';
+const base_url = 'https://homeiz.webitss.com/Homiez/';
 export {base_url};

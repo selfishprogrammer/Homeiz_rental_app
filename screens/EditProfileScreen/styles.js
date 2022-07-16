@@ -4,6 +4,8 @@ export default {
     marginHorizontal: 20,
     padding: 5,
     borderRadius: 5,
+    elevation: 5,
+    marginVertical: 15,
   },
   inputField: {
     marginTop: 15,
@@ -14,12 +16,12 @@ export default {
   loginBtn: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#A5DE18',
+    backgroundColor: 'green',
     margin: 10,
     borderRadius: 5,
   },
   lgnbtnTxt: {
-    fontFamily: 'serif',
+    fontFamily: 'BlissPro-Bold',
     marginLeft: 12,
     textAlign: 'center',
     color: 'black',
@@ -29,12 +31,12 @@ export default {
     color: 'white',
     padding: 10,
     fontSize: 12,
-    fontFamily: 'serif',
-    fontWeight: 'bold',
+    fontFamily: 'BlissPro-Bold',
+    // fontWeight: 'bold',
   },
   errorMsg: {
     color: 'red',
     marginLeft: 15,
-    fontFamily: 'serif',
+    fontFamily: 'BlissPro-Bold',
   },
 };

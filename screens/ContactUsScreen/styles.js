@@ -1,8 +1,4 @@
-const React = require('react-native');
 import Colors from '../../constants/Colors';
-
-const {StyleSheet, Dimensions, Platform} = React;
-
 export default {
   searchImage: {
     flex: 1,

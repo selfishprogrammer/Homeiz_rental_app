@@ -28,8 +28,8 @@ export default {
   houseImg: {width: '100%', height: 150},
   bhk: {
     margin: 10,
-    fontFamily: 'serif',
-    fontWeight: 'bold',
+    fontFamily: 'BlissPro-Bold',
+    // fontWeight: 'bold',
     color: 'black',
     fontSize: 18,
     marginRight: 3,
@@ -48,7 +48,7 @@ export default {
   nearBy: {
     display: 'flex',
     textAlign: 'center',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     color: 'black',
     fontSize: 10,
     fontFamily: 'math',
@@ -59,7 +59,7 @@ export default {
     fontSize: 16,
     margin: 10,
     color: 'black',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
   },
   addRess: {
     textAlign: 'center',
@@ -67,7 +67,7 @@ export default {
     fontSize: 20,
     margin: 10,
     color: 'black',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
   },
   btnContainer: {
     backgroundColor: '#fff',
@@ -80,7 +80,7 @@ export default {
   btnTxt: {
     display: 'flex',
     textAlign: 'center',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     color: 'black',
     fontSize: 15,
     fontFamily: 'math',
@@ -93,21 +93,23 @@ export default {
     borderRadius: 15,
     justifyContent: 'center',
     padding: 10,
+    elevation: 5,
+    marginVertical: 10,
   },
   errorToast: {
     textAlign: 'center',
     color: 'black',
     padding: 10,
     fontSize: 15,
-    fontFamily: 'serif',
-    fontWeight: 'bold',
+    fontFamily: 'BlissPro-Bold',
+    // fontWeight: 'bold',
   },
   title: {
     color: 'black',
-    fontFamily: 'serif',
+    fontFamily: 'BlissPro-Bold',
     fontSize: 20,
     marginLeft: 10,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     marginTop: 10,
   },
   inputField: {
@@ -119,10 +121,10 @@ export default {
   errorMsg: {
     color: 'red',
     marginLeft: 15,
-    fontFamily: 'serif',
+    fontFamily: 'BlissPro-Bold',
   },
   forgotPass: {
-    fontFamily: 'serif',
+    fontFamily: 'BlissPro-Bold',
     marginLeft: 12,
     // marginBottom: 10,
     color: 'black',
@@ -135,7 +137,7 @@ export default {
     borderRadius: 5,
   },
   lgnbtnTxt: {
-    fontFamily: 'serif',
+    fontFamily: 'BlissPro-Bold',
     marginLeft: 12,
     textAlign: 'center',
     color: 'black',
@@ -143,7 +145,7 @@ export default {
   signUp: {
     color: 'black',
     fontWeight: '700',
-    fontFamily: 'serif',
+    fontFamily: 'BlissPro-Bold',
   },
   toastView: {
     backgroundColor: 'rgba(253, 252, 252, 1)',
@@ -158,7 +160,7 @@ export default {
     color: 'white',
     padding: 10,
     fontSize: 12,
-    fontFamily: 'serif',
-    fontWeight: 'bold',
+    fontFamily: 'BlissPro-Bold',
+    // fontWeight: 'bold',
   },
 };

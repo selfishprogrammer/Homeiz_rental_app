@@ -1,7 +1,9 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {setLoggedIn} from '../../actions';
+import Logo from '../../components/Logo';
 import Successmodal from '../../components/SuccessModal';
 import Loader from '../../constants/Loader';
 import Auth from '../../services/Auth';
@@ -40,79 +42,84 @@ const DeleteAccountScreen = ({navigation}) => {
     }
   };
   return (
-    <View style={{flex: 1, backgroundColor: 'rgba(0, 57, 72, 1)'}}>
+    // eslint-disable-next-line react-native/no-inline-styles
+    <View style={{flex: 1, backgroundColor: '#fff'}}>
       {renderSuccessModal()}
-      {backendResponce !== '' ? (
-        <View
-          style={{
-            backgroundColor: '#D50000',
-            borderRadius: 10,
-            margin: 15,
-          }}>
-          <Text style={styles.toastTxt}>{backendResponce}</Text>
-        </View>
-      ) : null}
-
-      <View style={{flex: 1, justifyContent: 'center'}}>
-        <Loader spin={isLoading} />
-        <View style={styles.container}>
-          <Image
-            source={{
-              uri: 'http://simpleicon.com/wp-content/uploads/remove-user.png',
-            }}
+      <ScrollView>
+        <Logo />
+        {backendResponce !== '' ? (
+          <View
+            // eslint-disable-next-line react-native/no-inline-styles
             style={{
-              width: 50,
-              height: 50,
-              marginVertical: 20,
-              alignSelf: 'center',
-            }}
-          />
-          <Text
-            style={{
-              textAlign: 'center',
-              fontFamily: 'serif',
-              fontWeight: 'normal',
-              color: 'black',
-              fontSize: 15,
+              backgroundColor: '#D50000',
+              borderRadius: 10,
+              margin: 15,
             }}>
-            We Are Very Sorry To See You Go. Your Data Will Be Clear And You
-            Have To Reregister Yourself To Use Our App.
-          </Text>
+            <Text style={styles.toastTxt}>{backendResponce}</Text>
+          </View>
+        ) : null}
 
-          <TouchableOpacity
-            onPress={() => {
-              deleteAccount();
-            }}
-            style={{
-              marginVertical: 25,
-
-              borderRadius: 20,
-              backgroundColor: '#C80000',
-            }}>
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <Loader spin={isLoading} />
+          <View style={styles.container}>
+            <Image
+              source={{
+                uri: 'http://simpleicon.com/wp-content/uploads/remove-user.png',
+              }}
+              style={{
+                width: 50,
+                height: 50,
+                marginVertical: 20,
+                alignSelf: 'center',
+              }}
+            />
             <Text
               style={{
-                padding: 10,
                 textAlign: 'center',
-                color: 'white',
-                fontFamily: 'serif',
-                fontSize: 18,
+                fontFamily: 'BlissPro-Bold',
+                // fontWeight: 'normal',
+                color: 'black',
+                fontSize: 15,
               }}>
-              Delete Account
+              We Are Very Sorry To See You Go. Your Data Will Be Clear And You
+              Have To Reregister Yourself To Use Our App.
             </Text>
-          </TouchableOpacity>
 
-          <Text
-            style={{
-              textAlign: 'center',
-              fontFamily: 'serif',
-              fontWeight: 'normal',
-              color: 'black',
-              fontSize: 10,
-            }}>
-            *** Thanks For Choosing Homeiz ***
-          </Text>
+            <TouchableOpacity
+              onPress={() => {
+                deleteAccount();
+              }}
+              style={{
+                marginVertical: 25,
+
+                borderRadius: 20,
+                backgroundColor: '#C80000',
+              }}>
+              <Text
+                style={{
+                  padding: 10,
+                  textAlign: 'center',
+                  color: 'white',
+                  fontFamily: 'BlissPro',
+                  fontSize: 18,
+                }}>
+                Delete Account
+              </Text>
+            </TouchableOpacity>
+
+            <Text
+              style={{
+                textAlign: 'center',
+                fontFamily: 'BlissPro-Bold',
+                // fontWeight: 'normal',
+                color: 'black',
+                fontSize: 10,
+              }}>
+              *** Thanks For Choosing Homeiz ***
+            </Text>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };

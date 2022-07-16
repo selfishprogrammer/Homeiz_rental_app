@@ -1,23 +1,12 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  ImageBackground,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView, Alert} from 'react-native';
 import {TextInput} from 'react-native-paper';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './styles';
-import {Cross, Icon} from '../../constants/Images';
 import Loader from '../../constants/Loader';
-import Auth from '../../services/Auth';
 import Services from '../../services/Services';
 import Successmodal from '../../components/SuccessModal';
-import {useDispatch} from 'react-redux';
-import {setLoggedIn} from '../../actions';
+import Logo from '../../components/Logo';
 export default function RegisterScreen({navigation}) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -35,7 +24,6 @@ export default function RegisterScreen({navigation}) {
 
   const [isLoading, setisLoading] = useState(false);
   const [successModal, setsuccessModal] = useState(false);
-  const dispatch = useDispatch();
   const resetErrorField = () => {
     setemailError('');
     setCpasswordError('');
@@ -94,18 +82,30 @@ export default function RegisterScreen({navigation}) {
           password,
           categories: 'users',
         };
+
         const responce = await Services.userRegister(userData);
 
         console.log('data=====>', responce);
         if (responce.status === 'true') {
+          const resp = await Services.generateOtp({email: userData.email});
+          console.log('responce======>', resp.status);
+          if (resp.status === undefined) {
+            navigation.navigate('OtpScreen', {
+              from: 'registerScreen',
+              userInfo: userData,
+            });
+          } else {
+            Alert.alert(resp.data);
+          }
           resetInputField();
-          await Auth.setUser(userData);
-          await Auth.setUserEmail(userData.email);
-          setsuccessResp(responce.data);
-          setsuccessModal(true);
-          setTimeout(() => {
-            dispatch(setLoggedIn(true));
-          }, 2000);
+          // resetInputField();
+          // await Auth.setUser(userData);
+          // await Auth.setUserEmail(userData.email);
+          // setsuccessResp(responce.data);
+          // setsuccessModal(true);
+          // setTimeout(() => {
+          //   dispatch(setLoggedIn(true));
+          // }, 2000);
         } else {
           setbackendResponce(responce.data);
         }
@@ -115,10 +115,11 @@ export default function RegisterScreen({navigation}) {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: 'rgba(0, 57, 72, 1)'}}>
+    <View style={{flex: 1, backgroundColor: '#fff'}}>
       <Loader spin={isLoading} />
       {renderSuccessModal()}
       <ScrollView style={{flex: 1}}>
+        <Logo />
         <View style={styles.toastView}>
           {backendResponce !== '' ? (
             <View
