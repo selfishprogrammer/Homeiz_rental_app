@@ -9,6 +9,7 @@ import Loader from '../../constants/Loader';
 import {setLoggedIn, setOwnerLogin, setSkipLogin} from '../../actions';
 import {useDispatch} from 'react-redux';
 import Logo from '../../components/Logo';
+import PushNotification from 'react-native-push-notification';
 export default function LoginScreen({navigation}) {
   const [email, setemail] = useState('');
   const [emailError, setemailError] = useState('');
@@ -60,6 +61,19 @@ export default function LoginScreen({navigation}) {
             dispatch(setOwnerLogin(true));
           }
           dispatch(setLoggedIn(true));
+          PushNotification.localNotification({
+            /* iOS and Android properties */
+            channelId: '234567890909090909090',
+            title: `Welcome back ${responce.name}`, // (optional)
+            message:
+              'You are loggedIn Now , Start Finding Your Rented House in Homiez.', // (required)
+            picture: 'https://www.example.tld/picture.jpg', // (optional) Display an picture with the notification, alias of `bigPictureUrl` for Android. default: undefined
+            userInfo: {loginData}, // (optional) default: {} (using null throws a JSON value '<null>' error)
+            playSound: true, // (optional) default: true
+            soundName: 'default', // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
+            number: 1, // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
+            repeatType: 'day', // (optional) Repeating interval. Check 'Repeating Notifications' section for more info.
+          });
         } else {
           setbackendResponce(responce.data);
         }

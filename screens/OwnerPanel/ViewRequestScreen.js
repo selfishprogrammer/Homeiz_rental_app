@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import React, {useEffect} from 'react';

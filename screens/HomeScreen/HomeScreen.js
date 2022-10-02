@@ -36,7 +36,6 @@ const Homescreen = ({navigation}) => {
   // const [isLoading, setisLoading] = useState(false);
   // const [hasLocationPermission, sethasLocationPermission] = useState(false);
   const [houseAva, sethouseAva] = useState('');
-
   const checkLocationPermission = async () => {
     const hasLocation = await Permission.hasLocationPermission();
     console.log('hasLocation', hasLocation);
