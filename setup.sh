@@ -1,11 +1,8 @@
 set -e
 
-# Setup project dependencies
 printf "NPM installing\n"
 npm install
 
-# Setup ScanditSDK
-printf "Setting up ScanditSDK\n"
 cd ios
 printf "Pod installation\n"
 # for intel chip mac
